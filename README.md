@@ -27,7 +27,9 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
 
 ---
-## [FNM](https://github.com/Schniz/fnm?tab=readme-ov-file#manually) (_Fast Node Management_) - Nodejs versioning
+## Technologies used
+
+### [FNM](https://github.com/Schniz/fnm?tab=readme-ov-file#manually) (_Fast Node Management_) - Nodejs versioning
 The nodejs version is managed by FNM, to initialize and use it just follow the documentation steps, example with PowerShell in order :
 * **winget install Schniz.fnm**
 * **notepad $profile**
@@ -35,4 +37,15 @@ The nodejs version is managed by FNM, to initialize and use it just follow the d
 _then add the following command inside and close the file_ :
 * **fnm env --use-on-cd | Out-String | Invoke-Expression**
 * **fnm use "the desired Nodejs version"**
+
+---
+## Annexes :
+
+### Design Inspiration
+
+- **Login**
+  - [Peter Mocanu](https://www.petermocanu.com/login-form-ui-design/)
+  - [Dribble : @Jonhye](https://dribbble.com/shots/4686461-Login)
+  - [Dribble : @.Nvn ](https://dribbble.com/shots/14231644-Login-Flow)
+  - [Dribble : @Deekshith Salian](https://dribbble.com/shots/15247701-Login-and-Signup-Screens)
 
