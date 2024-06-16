@@ -25,3 +25,14 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+---
+## [FNM](https://github.com/Schniz/fnm?tab=readme-ov-file#manually) (_Fast Node Management_) - Nodejs versioning
+The nodejs version is managed by FNM, to initialize and use it just follow the documentation steps, example with PowerShell in order :
+* **winget install Schniz.fnm**
+* **notepad $profile**
+
+_then add the following command inside and close the file_ :
+* **fnm env --use-on-cd | Out-String | Invoke-Expression**
+* **fnm use "the desired Nodejs version"**
+
