@@ -3,5 +3,18 @@
 @tailwind components;
 @tailwind utilities;
 
+
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+@layer base {
+  h1 {
+    @apply text-3xl
+  }
+  h2 {
+    @apply text-2xl
+  }
+  h3 {
+    @apply text-xl
+  }
+
+}
