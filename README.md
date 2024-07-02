@@ -48,4 +48,5 @@ _then add the following command inside and close the file_ :
   - [Dribble : @Jonhye](https://dribbble.com/shots/4686461-Login)
   - [Dribble : @.Nvn ](https://dribbble.com/shots/14231644-Login-Flow)
   - [Dribble : @Deekshith Salian](https://dribbble.com/shots/15247701-Login-and-Signup-Screens)
+  - [Justinmind: 40 inspiring login form](https://www.justinmind.com/blog/20-inspiring-website-login-form-pages/)
 

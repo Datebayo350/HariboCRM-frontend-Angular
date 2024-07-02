@@ -1,12 +1,18 @@
-<div class="authenticationNav-container absolute top-0 h-[7.5%] w-[100%] border border-b-2 border-b-amber-700
+<div class="authenticationNav-container absolute top-0 h-[7.5%] w-[100%] border-b border-b-1 border-red-600
 flex justify-between items-center">
 
-  <img class="static  w-1/2 ml-[3.5%] w-[15%] h-[50%]" ngSrc="haribo-black-logo.png" width="1" height="1"  />
+  <img class="static  w-1/2 ml-[3.5%] w-[12%] h-[50%]" ngSrc="haribo-black-logo.png" width="1" height="1"  />
 
-  <nav class="authenticationNav w-1/2 flex justify-evenly bg-green-400">
+  <nav class="authenticationNav w-1/2 flex justify-end">
     <li class="list-none">
+      <!-- TODO CONDITIONNAL LAYOUT BASED ON USER SELECTION-->
+
+<!--      <button type="button" class="p-0 mx-5 text-red-600 font-bold text-lg font-medium text-gray-900 focus:outline-none-->
+<!--       hover:text-red-800 hover:underline focus:z-10 focus:ring-4 focus:ring-gray-100">Créer un compte</button>-->
       <button type="button" class="p-0 mx-5 text-red-600 font-bold text-lg font-medium text-gray-900 focus:outline-none
-       hover:text-red-800 hover:underline focus:z-10 focus:ring-4 focus:ring-gray-100">Créer un compte</button>
+       hover:text-red-800 hover:underline focus:z-10 focus:ring-4 focus:ring-gray-100">
+        <a href="/connexion">Connexion</a>
+      </button>
 
       <button type="button" class="p-0 mx-5 text-red-600 font-bold text-lg font-medium text-gray-900 focus:outline-none
        hover:text-red-800 hover:underline focus:z-10 focus:ring-4 focus:ring-gray-100">Contacter le support</button>
