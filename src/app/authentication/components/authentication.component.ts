@@ -41,14 +41,14 @@ export class AuthenticationComponent {
     private store: Store<{ authentication: AuthenticationStateInterface }>,
   ) {}
 
-  displayLoginForm$ = this.store.select(selectDisplayLoginForm);
+  displayLoginForm = false;
 
   registerForm = new FormGroup<FormGroupInterface>({
-    lastName: !this.displayLoginForm$
+    lastName: !this.displayLoginForm
       ? new FormControl('', Validators.required)
       : undefined,
 
-    firstName: !this.displayLoginForm$
+    firstName: !this.displayLoginForm
       ? new FormControl('', Validators.required)
       : undefined,
 
@@ -65,21 +65,27 @@ export class AuthenticationComponent {
   });
 
   handleSubmit() {
-    console.log(this.displayLoginForm$);
-    const { lastName, firstName, email, password } =
+    const { lastName, firstName, email: emailRegister, password: passwordRegister } =
       this.registerForm.getRawValue();
 
-    if (this.displayLoginForm$ && lastName && firstName && email && password) {
+    const { email: emailLogin, password: passwordLogin } =
+      this.loginForm.getRawValue();
+
+    if (!this.displayLoginForm && lastName && firstName && emailRegister && emailRegister) {
+      console.log("Register");
+      console.log(this.registerForm.getRawValue());
       this.store.dispatch(
         register({
-          user: { lastName, firstName, email, password },
+          user: { lastName, firstName, email:emailRegister, password: passwordRegister },
         }),
       );
-    } else if (this.displayLoginForm$ && email && password) {
-      this.store.dispatch(login({ user: { email, password } }));
+    }
+    if (this.displayLoginForm && emailLogin && passwordLogin) {
+      console.log("Login");
+      console.log(this.loginForm.getRawValue());
+      this.store.dispatch(login({ user: { email: emailLogin, password: passwordLogin } }));
     }
 
-    console.log(this.registerForm.getRawValue());
   }
 
 }

@@ -15,9 +15,9 @@
   <div
     class="relative m-auto flex flex-col text-gray-700 shadow-none rounded-xl bg-clip-border"
   >
-    <p> {{displayLoginForm$}}</p>
+<h3> {{displayLoginForm}}</h3>
 
-    @if (displayLoginForm$) {
+    @if (displayLoginForm) {
       <h4
         class="font-sans text-2xl antialiased font-semibold leading-snug tracking-normal text-center text-blue-gray-900"
       >
@@ -80,7 +80,7 @@
         >
           Vous n'avez pas de compte ? Créez en un
           <a
-            (click)="displayLoginForm = false"
+            (click)="displayLoginForm=false"
             href="#"
             class="font-medium text-red-600"
           >
@@ -180,14 +180,14 @@
           class="mt-6 block w-full select-none rounded-lg bg-red-600 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
           type="submit"
         >
-          Connexion
+          Inscription
         </button>
         <p
           class="block mt-4 font-sans text-base antialiased font-normal leading-relaxed text-center text-gray-700"
         >
           Vous avez déjà un compte ? Connectez-vous
           <a
-            (click)="displayLoginForm$"
+            (click)="displayLoginForm=true"
             href="#"
             class="font-medium text-red-600"
           >

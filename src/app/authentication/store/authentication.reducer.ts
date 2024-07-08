@@ -13,13 +13,15 @@ export const authenticationFeature = createFeature({
   name: "authentication",
   reducer: createReducer(
     authenticationInitialState,
-    on(register, (state) => ({
+    on(register, (state, props) => ({
       ...state,
+      ...props.user,
       authFormIsSubmitted: true,
       authFormIsSubmitting: true,
     })),
-    on(login, (state) => ({
+    on(login, (state, props) => ({
       ...state,
+      ...props.user,
       authFormIsSubmitted: true,
       authFormIsSubmitting: true,
     })),
