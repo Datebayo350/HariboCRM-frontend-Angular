@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { AuthenticationComponent } from './authentication/authentication.component';
+import { AuthenticationComponent } from './authentication/components/authentication.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 export const appRoutes: Routes = [
@@ -11,8 +11,8 @@ export const appRoutes: Routes = [
   {
     path: 'authentifié',
     loadChildren: () =>
-      import('./authentication/authenticated.routes').then(
-        (module) => module.authenticatedRoutes,
+      import('./authentication/authentication.routes').then(
+        (module) => module.authenticationRoutes,
       ),
   },
   {
