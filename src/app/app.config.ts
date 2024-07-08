@@ -11,6 +11,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { provideState, provideStore } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { appState } from './store/appState';
+import {authenticationFeatureKey, authenticationReducer} from "./authentication/store/authentication.reducer";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -19,7 +20,7 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideStore(),
-    provideState(appState),
+    provideState(authenticationFeatureKey, authenticationReducer),
     provideStoreDevtools({
       maxAge: 25,
       logOnly: !isDevMode(),
