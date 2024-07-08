@@ -82,6 +82,4 @@ export class AuthenticationComponent {
     console.log(this.registerForm.getRawValue());
   }
 
-  protected readonly login = login;
-  protected readonly displayLoginForm = displayLoginForm;
 }
