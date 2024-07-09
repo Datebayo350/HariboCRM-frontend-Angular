@@ -15,9 +15,9 @@
   <div
     class="relative m-auto flex flex-col text-gray-700 shadow-none rounded-xl bg-clip-border"
   >
-<h3> {{displayLoginForm}}</h3>
+<h3> {{displayLoginForm$ | async}}</h3>
 
-    @if (displayLoginForm) {
+    @if (displayLoginForm$ | async) {
       <h4
         class="font-sans text-2xl antialiased font-semibold leading-snug tracking-normal text-center text-blue-gray-900"
       >
@@ -30,7 +30,7 @@
       </p>
       <form
         [formGroup]="loginForm"
-        (ngSubmit)="handleSubmit()"
+        (ngSubmit)="onSubmit()"
         class="max-w-screen-lg mt-8 mb-2 w-80 sm:w-96"
       >
         <div class="flex flex-col gap-6 mb-1">
@@ -80,7 +80,7 @@
         >
           Vous n'avez pas de compte ? Créez en un
           <a
-            (click)="displayLoginForm=false"
+            (click)="onDisplayLoginForm()"
             href="#"
             class="font-medium text-red-600"
           >
@@ -104,7 +104,7 @@
 
       <form
         [formGroup]="registerForm"
-        (ngSubmit)="handleSubmit()"
+        (ngSubmit)="onSubmit()"
         class="max-w-screen-lg mt-8 mb-2 w-80 sm:w-96"
       >
         <div class="flex flex-col gap-6 mb-1">
@@ -187,7 +187,7 @@
         >
           Vous avez déjà un compte ? Connectez-vous
           <a
-            (click)="displayLoginForm=true"
+            (click)="onDisplayLoginForm()"
             href="#"
             class="font-medium text-red-600"
           >

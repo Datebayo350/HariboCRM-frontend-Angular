@@ -3,7 +3,7 @@ import { AuthenticatedComponent } from '../../authenticated/authenticated.compon
 import { LoginComponent } from '../../login/login.component';
 import { NavigationComponent } from '../../navigation/navigation.component';
 import { RouterService } from '../../services/router.service.';
-import { NgOptimizedImage, provideImgixLoader } from '@angular/common';
+import {AsyncPipe, NgOptimizedImage, provideImgixLoader} from '@angular/common';
 import { AuthenticationNavComponent } from '../../authentication-nav/authentication-nav.component';
 import {
   ReactiveFormsModule,
@@ -18,8 +18,9 @@ import {
 } from '../store/authentication.actions';
 import { FormGroupInterface } from '../types/formgroup.interface';
 import { AuthenticationStateInterface } from '../types/authenticationState.interface';
-import { selectDisplayLoginForm } from '../selectors/authentication.selector';
 import { Store } from '@ngrx/store';
+import {selectDisplayLoginForm} from "../store/authentication.reducer";
+import {toSignal} from "@angular/core/rxjs-interop";
 @Component({
   selector: 'app-authentication',
   standalone: true,
@@ -30,6 +31,7 @@ import { Store } from '@ngrx/store';
     NgOptimizedImage,
     AuthenticationNavComponent,
     ReactiveFormsModule,
+    AsyncPipe,
   ],
   templateUrl: './authentication.component.html',
   styleUrl: './authentication.component.css',
@@ -41,14 +43,16 @@ export class AuthenticationComponent {
     private store: Store<{ authentication: AuthenticationStateInterface }>,
   ) {}
 
-  displayLoginForm = false;
-
+  displayLoginForm$ = this.store.select(selectDisplayLoginForm);
+  displayLoginFormSignal = toSignal(this.displayLoginForm$, {initialValue: false})
   registerForm = new FormGroup<FormGroupInterface>({
-    lastName: !this.displayLoginForm
+    lastName: !this.displayLoginFormSignal()
+    // lastName: !this.displayLoginForm
       ? new FormControl('', Validators.required)
       : undefined,
 
-    firstName: !this.displayLoginForm
+    firstName: !this.displayLoginFormSignal()
+    // firstName: !this.displayLoginForm
       ? new FormControl('', Validators.required)
       : undefined,
 
@@ -64,15 +68,17 @@ export class AuthenticationComponent {
     password: new FormControl('', Validators.required),
   });
 
-  handleSubmit() {
+  onDisplayLoginForm () {
+    this.store.dispatch(displayLoginForm());
+  }
+  onSubmit() {
     const { lastName, firstName, email: emailRegister, password: passwordRegister } =
       this.registerForm.getRawValue();
 
     const { email: emailLogin, password: passwordLogin } =
       this.loginForm.getRawValue();
 
-    if (!this.displayLoginForm && lastName && firstName && emailRegister && emailRegister) {
-      console.log("Register");
+    if (!this.displayLoginFormSignal() && lastName && firstName && emailRegister && emailRegister) {
       console.log(this.registerForm.getRawValue());
       this.store.dispatch(
         register({
@@ -80,8 +86,7 @@ export class AuthenticationComponent {
         }),
       );
     }
-    if (this.displayLoginForm && emailLogin && passwordLogin) {
-      console.log("Login");
+    if (this.displayLoginFormSignal() && emailLogin && passwordLogin) {
       console.log(this.loginForm.getRawValue());
       this.store.dispatch(login({ user: { email: emailLogin, password: passwordLogin } }));
     }
