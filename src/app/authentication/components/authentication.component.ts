@@ -41,7 +41,7 @@ import {AuthenticationService} from "../services/authentication.service";
 export class AuthenticationComponent {
   constructor(
     protected router: RouterService,
-    private store: Store<{ authentication: AuthenticationStateInterface }>,
+    private store: Store,
     private  authService : AuthenticationService
   ) {}
   displaylg = false;
