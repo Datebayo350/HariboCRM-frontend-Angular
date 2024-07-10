@@ -1,15 +1,26 @@
-import { createAction, props } from '@ngrx/store';
+import {createAction, createActionGroup, emptyProps, props} from '@ngrx/store';
 import { AuthenticationtInterface } from '../types/authentication.interface';
+import {CurrentUserInterface} from "../types/currentUser.interface";
 
-export const login = createAction(
-  '[Authentication] Login',
-  props<AuthenticationtInterface>(),
-);
-export const register = createAction(
-  '[Authentication] Register',
-  props<AuthenticationtInterface>(),
+export const loginActions = createActionGroup({
+  source: "Authentication",
+  events: {
+    Login: props<AuthenticationtInterface>(),
+    "Login success": props<CurrentUserInterface>(),
+    "Login failure": emptyProps(),
+  }
+});
+
+export const registerActions = createActionGroup({
+  source: "Authentication",
+  events: {
+      Register: props<AuthenticationtInterface>(),
+      "Register success": props<CurrentUserInterface>(),
+      "Register failure": emptyProps(),
+    }
+  }
 );
 
-export const displayLoginForm = createAction(
+export const displayLoginFormAction = createAction(
   '[Authentication] Display Login Form',
 );

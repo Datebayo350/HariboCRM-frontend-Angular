@@ -12,12 +12,11 @@ import {
   Validators,
 } from '@angular/forms';
 import {
-  displayLoginForm,
-  login,
-  register,
+  displayLoginFormAction,
+  loginActions,
+  registerActions,
 } from '../store/authentication.actions';
 import { FormGroupInterface } from '../types/formgroup.interface';
-import { AuthenticationStateInterface } from '../types/authenticationState.interface';
 import { Store } from '@ngrx/store';
 import {selectDisplayLoginForm} from "../store/authentication.reducer";
 import {toSignal} from "@angular/core/rxjs-interop";
@@ -76,7 +75,7 @@ export class AuthenticationComponent {
   });
 
   onDisplayLoginForm () {
-    this.store.dispatch(displayLoginForm());
+    this.store.dispatch(displayLoginFormAction());
   }
   onSubmit() {
     const { lastName, firstName, username, email: emailRegister, password: passwordRegister } =
@@ -88,7 +87,7 @@ export class AuthenticationComponent {
     if (!this.displayLoginFormSignal() &&  lastName && firstName && username && emailRegister && emailRegister) {
     // if (!this.displaylg && lastName && firstName && emailRegister && emailRegister) {
       this.store.dispatch(
-        register({
+        registerActions.register({
           user: { lastName, firstName, username, email: emailRegister, password: passwordRegister },
         }),
       );
@@ -100,7 +99,7 @@ export class AuthenticationComponent {
 
     if (this.displayLoginFormSignal() && emailLogin && passwordLogin) {
     // if (this.displaylg && emailLogin && passwordLogin) {
-      this.store.dispatch(login({ user: { email: emailLogin, password: passwordLogin } }));
+      this.store.dispatch(loginActions.login({ user: { email: emailLogin, password: passwordLogin } }));
       this.authService
         .register({ user: { email: emailLogin, password: passwordLogin }})
         .subscribe( (result) => console.log("Login result =>", result))

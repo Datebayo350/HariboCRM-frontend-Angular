@@ -3,21 +3,19 @@ import {HttpClient} from "@angular/common/http";
 import {AuthenticationtInterface} from "../types/authentication.interface";
 import {map, Observable} from "rxjs";
 import {environment} from "../../../environments/environment.development";
+import {CurrentUserInterface} from "../types/currentUser.interface";
+import {AuthenticationResponseInterface} from "../types/authenticationResponse.interface";
 
 @Injectable({
   providedIn: "root"
 })
 export class AuthenticationService {
   constructor(private http:HttpClient) {}
-//TODO : Find the right type for the return
-  register (data:AuthenticationtInterface ): Observable<any> {
+  register (newUser:AuthenticationtInterface ): Observable<CurrentUserInterface> {
 
     const url = environment.apiTest+ "/users";
     return this.http
-      .post(url, data)
-      .pipe(map( (response) => {
-        return {user : response};
-      })
-    );
+      .post<AuthenticationResponseInterface>(url, newUser)
+      .pipe(map( (response) => response.user));
   }
 }

@@ -1,6 +1,6 @@
 import {createFeature, createReducer, on} from '@ngrx/store';
 import { AuthenticationStateInterface } from '../types/authenticationState.interface';
-import { displayLoginForm, login, register } from './authentication.actions';
+import { displayLoginFormAction, loginActions, registerActions } from './authentication.actions';
 
 const authenticationInitialState: AuthenticationStateInterface = {
   userLoggedIn: false,
@@ -13,19 +13,26 @@ export const authenticationFeature = createFeature({
   name: "authentication",
   reducer: createReducer(
     authenticationInitialState,
-    on(register, (state, props) => ({
+    on(registerActions.registerSuccess, (state, props) => ({
       ...state,
-      ...props.user,
+      userLoggedIn: !state.userLoggedIn,
+      currentUser : {...props},
+      authFormIsSubmitted: true,
+      authFormIsSubmitting: true,
+    }))
+    ,on(registerActions.registerFailure, (state, props) => ({
+      ...state,
+      authFormIsSubmitted: true,
+      authFormIsSubmitting: false,
+    })),
+    on(loginActions.loginSuccess, (state, props) => ({
+      ...state,
+      userLoggedIn: !state.userLoggedIn,
+      currentUser : {...props},
       authFormIsSubmitted: true,
       authFormIsSubmitting: true,
     })),
-    on(login, (state, props) => ({
-      ...state,
-      ...props.user,
-      authFormIsSubmitted: true,
-      authFormIsSubmitting: true,
-    })),
-    on(displayLoginForm, (state) => ({
+    on(displayLoginFormAction, (state) => ({
       ...state,
       displayLoginForm: !state.displayLoginForm,
     })),
