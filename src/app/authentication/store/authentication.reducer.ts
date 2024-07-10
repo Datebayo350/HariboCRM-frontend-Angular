@@ -1,4 +1,4 @@
-import {createFeature, createReducer, createSelector, on} from '@ngrx/store';
+import {createFeature, createReducer, on} from '@ngrx/store';
 import { AuthenticationStateInterface } from '../types/authenticationState.interface';
 import { displayLoginForm, login, register } from './authentication.actions';
 

@@ -21,6 +21,7 @@ import { AuthenticationStateInterface } from '../types/authenticationState.inter
 import { Store } from '@ngrx/store';
 import {selectDisplayLoginForm} from "../store/authentication.reducer";
 import {toSignal} from "@angular/core/rxjs-interop";
+import {AuthenticationService} from "../services/authentication.service";
 @Component({
   selector: 'app-authentication',
   standalone: true,
@@ -41,18 +42,24 @@ export class AuthenticationComponent {
   constructor(
     protected router: RouterService,
     private store: Store<{ authentication: AuthenticationStateInterface }>,
+    private  authService : AuthenticationService
   ) {}
-
+  displaylg = false;
   displayLoginForm$ = this.store.select(selectDisplayLoginForm);
   displayLoginFormSignal = toSignal(this.displayLoginForm$, {initialValue: false})
   registerForm = new FormGroup<FormGroupInterface>({
     lastName: !this.displayLoginFormSignal()
-    // lastName: !this.displayLoginForm
+    // lastName: !this.displaylg
       ? new FormControl('', Validators.required)
       : undefined,
 
     firstName: !this.displayLoginFormSignal()
-    // firstName: !this.displayLoginForm
+    // firstName: !this.displaylg
+      ? new FormControl('', Validators.required)
+      : undefined,
+
+    username: !this.displayLoginFormSignal()
+    // firstName: !this.displaylg
       ? new FormControl('', Validators.required)
       : undefined,
 
@@ -72,24 +79,35 @@ export class AuthenticationComponent {
     this.store.dispatch(displayLoginForm());
   }
   onSubmit() {
-    const { lastName, firstName, email: emailRegister, password: passwordRegister } =
+    const { lastName, firstName, username, email: emailRegister, password: passwordRegister } =
       this.registerForm.getRawValue();
 
     const { email: emailLogin, password: passwordLogin } =
       this.loginForm.getRawValue();
 
-    if (!this.displayLoginFormSignal() && lastName && firstName && emailRegister && emailRegister) {
-      console.log(this.registerForm.getRawValue());
+    if (!this.displayLoginFormSignal() &&  lastName && firstName && username && emailRegister && emailRegister) {
+    // if (!this.displaylg && lastName && firstName && emailRegister && emailRegister) {
       this.store.dispatch(
         register({
-          user: { lastName, firstName, email:emailRegister, password: passwordRegister },
+          user: { lastName, firstName, username, email: emailRegister, password: passwordRegister },
         }),
       );
+      this.authService
+        .register({user : { lastName, firstName, username, email: emailRegister, password: passwordRegister }})
+        .subscribe( (result) => console.log("Register result =>", result))
+
     }
+
     if (this.displayLoginFormSignal() && emailLogin && passwordLogin) {
-      console.log(this.loginForm.getRawValue());
+    // if (this.displaylg && emailLogin && passwordLogin) {
       this.store.dispatch(login({ user: { email: emailLogin, password: passwordLogin } }));
+      this.authService
+        .register({ user: { email: emailLogin, password: passwordLogin }})
+        .subscribe( (result) => console.log("Login result =>", result))
+
+
     }
+
 
   }
 

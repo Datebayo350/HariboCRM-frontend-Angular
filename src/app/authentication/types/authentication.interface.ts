@@ -4,6 +4,7 @@ export interface AuthenticationtInterface {
     firstName?: string;
     address?: string;
     phone?: number;
+    username?: string;
     email: string;
     password: string;
   };

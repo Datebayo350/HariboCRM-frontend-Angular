@@ -10,8 +10,8 @@ import { appRoutes } from './app.routes';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideState, provideStore } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
-import { appState } from './store/appState';
 import {authenticationFeatureKey, authenticationReducer} from "./authentication/store/authentication.reducer";
+import {provideHttpClient} from "@angular/common/http";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -19,6 +19,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(appRoutes),
     provideAnimationsAsync(),
     provideZoneChangeDetection({ eventCoalescing: true }),
+    provideHttpClient(),
     provideStore(),
     provideState(authenticationFeatureKey, authenticationReducer),
     provideStoreDevtools({
