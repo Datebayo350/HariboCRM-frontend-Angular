@@ -1,9 +1,12 @@
-import {createEffect, Actions, ofType} from "@ngrx/effects";
+import {createEffect, Actions, ofType, FunctionalEffect} from "@ngrx/effects";
 import {inject} from "@angular/core";
 import {AuthenticationService} from "../services/authentication.service";
-import {CurrentUserInterface} from "../types/currentUser.interface";
+import {CurrentUserInterface} from "../../shared/types/currentUser.interface";
 import {registerActions} from "./authentication.actions";
-import {catchError, exhaustMap, map, of} from "rxjs";
+import { catchError, exhaustMap, map, of, tap } from 'rxjs';
+import { PersistenceService } from '../../shared/services/persistence.service';
+import { Router } from '@angular/router';
+import { RouterService } from '../../services/router.service.';
 
 /** @ngrx/effects - doc : https://ngrx.io/guide/effects
  *  createEffect function has 2 parameters :
@@ -18,8 +21,12 @@ import {catchError, exhaustMap, map, of} from "rxjs";
  * Options object : functional true because the effect is written in a functional way
  *
  */
-export const registerUserEffect = createEffect(
-  (actions$ = inject(Actions), authService = inject(AuthenticationService)) => {
+export const registerUserEffect  = createEffect(
+  (
+    actions$ = inject(Actions),
+   authService = inject(AuthenticationService),
+    persistenceService = inject(PersistenceService)
+  ) => {
     // we use pipe to group all our actions
     // pipe config :
     //  - ofType : Limite the actions stream to just actions needed ( authenticationActions
@@ -29,10 +36,13 @@ export const registerUserEffect = createEffect(
       exhaustMap(({user}) => {
         return authService.register({user: user}).pipe(
           map((currentUser: CurrentUserInterface) => {
+
+            persistenceService.set("accessToken", currentUser.token);
             return registerActions.registerSuccess({...currentUser})
           }),
 
-          catchError(() => of(registerActions.registerFailure()))
+          catchError(({ error }) =>  of(registerActions.registerFailure({ error })
+          ))
         )
       })
     )
@@ -40,3 +50,16 @@ export const registerUserEffect = createEffect(
   {functional: true}
   );
 
+export const redirectAfterRegistrationEffect = createEffect(
+  (
+    actions$ = inject(Actions),
+      router = inject(RouterService)
+  ) => {
+  return actions$.pipe(
+    ofType(registerActions.registerSuccess),
+    tap( () => {
+      router.redirectTo("/accueil");
+    })
+  )
+}, {functional: true, dispatch : false}
+)

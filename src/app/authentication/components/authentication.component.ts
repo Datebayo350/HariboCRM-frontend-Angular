@@ -3,7 +3,7 @@ import { AuthenticatedComponent } from '../../authenticated/authenticated.compon
 import { LoginComponent } from '../../login/login.component';
 import { NavigationComponent } from '../../navigation/navigation.component';
 import { RouterService } from '../../services/router.service.';
-import {AsyncPipe, NgOptimizedImage, provideImgixLoader} from '@angular/common';
+import { AsyncPipe, NgIf, NgOptimizedImage, provideImgixLoader } from '@angular/common';
 import { AuthenticationNavComponent } from '../../authentication-nav/authentication-nav.component';
 import {
   ReactiveFormsModule,
@@ -18,9 +18,13 @@ import {
 } from '../store/authentication.actions';
 import { FormGroupInterface } from '../types/formgroup.interface';
 import { Store } from '@ngrx/store';
-import {selectDisplayLoginForm} from "../store/authentication.reducer";
+import {selectDisplayLoginForm, selectBackendErrors} from "../store/authentication.reducer";
 import {toSignal} from "@angular/core/rxjs-interop";
 import {AuthenticationService} from "../services/authentication.service";
+import {
+  BackendErrorMessagesComponent
+} from '../../shared/components/backend-error-messages/backend-error-messages.component';
+import { combineLatest } from 'rxjs';
 @Component({
   selector: 'app-authentication',
   standalone: true,
@@ -30,8 +34,10 @@ import {AuthenticationService} from "../services/authentication.service";
     NavigationComponent,
     NgOptimizedImage,
     AuthenticationNavComponent,
+    BackendErrorMessagesComponent,
     ReactiveFormsModule,
     AsyncPipe,
+    NgIf
   ],
   templateUrl: './authentication.component.html',
   styleUrl: './authentication.component.css',
@@ -45,7 +51,20 @@ export class AuthenticationComponent {
   ) {}
   displaylg = false;
   displayLoginForm$ = this.store.select(selectDisplayLoginForm);
-  displayLoginFormSignal = toSignal(this.displayLoginForm$, {initialValue: false})
+  backendErrors$ = this.store.select(selectBackendErrors);
+
+  /**
+   * To avoid handle numerous observables in their side and the same in the template with several pipe's
+   * we can agregate all of them inside on object defined by "combineLatest"
+   * */
+  data$ = combineLatest({
+    displayLoginForm : this.store.select(selectDisplayLoginForm),
+    backendErrors : this.store.select(selectBackendErrors),
+  });
+
+  displayLoginFormSignal = toSignal(this.displayLoginForm$, {initialValue: false});
+  backErrs = toSignal(this.backendErrors$)
+
   registerForm = new FormGroup<FormGroupInterface>({
     lastName: !this.displayLoginFormSignal()
     // lastName: !this.displaylg
@@ -78,6 +97,7 @@ export class AuthenticationComponent {
     this.store.dispatch(displayLoginFormAction());
   }
   onSubmit() {
+    console.log('errors =>', this.backErrs);
     const { lastName, firstName, username, email: emailRegister, password: passwordRegister } =
       this.registerForm.getRawValue();
 

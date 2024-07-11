@@ -3,7 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {AuthenticationtInterface} from "../types/authentication.interface";
 import {map, Observable} from "rxjs";
 import {environment} from "../../../environments/environment.development";
-import {CurrentUserInterface} from "../types/currentUser.interface";
+import {CurrentUserInterface} from "../../shared/types/currentUser.interface";
 import {AuthenticationResponseInterface} from "../types/authenticationResponse.interface";
 
 @Injectable({
